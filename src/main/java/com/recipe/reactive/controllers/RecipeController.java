@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RestController
+//@RestController
 @RequiredArgsConstructor
 public class RecipeController {
     private final RecipeRepository recipeRepository;
