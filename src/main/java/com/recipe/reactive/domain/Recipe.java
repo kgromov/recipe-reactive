@@ -1,6 +1,7 @@
 package com.recipe.reactive.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Document
+@NoArgsConstructor
 public class Recipe {
     @Id
     private String id;
@@ -28,6 +30,10 @@ public class Recipe {
     private Byte[] image;
     private Difficulty difficulty;
     private Set<Category> categories = new HashSet<>();
+
+    public Recipe(String description) {
+        this.description = description;
+    }
 
     public Recipe(String id, String description) {
         this.id = id;
