@@ -1,9 +1,7 @@
-package com.recipe.reactive.controllers;
+package com.recipe.reactive.routes;
 
 import com.recipe.reactive.domain.Recipe;
 import com.recipe.reactive.repositories.RecipeRepository;
-import com.recipe.reactive.routes.RecipeRouter;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,15 +18,16 @@ import java.util.UUID;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-@Slf4j
 @WebFluxTest
-class RecipeControllerTest {
+@Import(RecipeRouter.class)
+class RecipeRouterTest {
     @Autowired
     private WebTestClient client;
     @MockBean
     private RecipeRepository recipeRepository;
     private final Recipe sushi = new Recipe(UUID.randomUUID().toString(), "Sushi");
     private final Recipe pizza = new Recipe(UUID.randomUUID().toString(), "Pizza");
+
 
     @BeforeEach
     void setUp() {
