@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -64,5 +65,50 @@ class RecipeRouterTest {
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(sushi.getId())
                 .jsonPath("$.description").isEqualTo(sushi.getDescription());
+    }
+
+    @Test
+    void createRecipe() {
+        Recipe borsch = new Recipe(UUID.randomUUID().toString(), "Borsch");
+        this.client
+            .post()
+            .uri("/recipes")
+            .accept(APPLICATION_JSON)
+            .body(Mono.just(borsch), Recipe.class)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBody()
+            .jsonPath("$.id").isEqualTo(borsch.getId())
+            .jsonPath("$.description").isEqualTo(borsch.getDescription());
+    }
+
+    @Test
+    void updateRecipe() {
+        Recipe margarita = new Recipe(UUID.randomUUID().toString(), "Margarita");
+        when(recipeRepository.findById(anyString())).thenReturn(Mono.just(pizza));
+
+        this.client
+            .put()
+            .uri("/recipes/" + pizza.getId())
+            .accept(APPLICATION_JSON)
+            .body(Mono.just(margarita), Recipe.class)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(APPLICATION_JSON)
+            .expectBody()
+            .jsonPath("$.id").isEqualTo(margarita.getId())
+            .jsonPath("$.description").isEqualTo(margarita.getDescription());
+    }
+
+    @Test
+    void deleteRecipe() {
+        this.client
+            .delete()
+            .uri("/recipes/" + pizza.getId())
+            .accept(APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk();
+
     }
 }
